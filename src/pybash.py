@@ -1,28 +1,30 @@
 
 from pathlib import Path
-import os,re
+import os,re,logging
+
+log=logging.getLogger(__name__)
 
 def run(cmd):
-    print("Running: ",cmd)
-    print(os.popen(cmd).read())
-    print("=======================")
+    log.info("Running: "+cmd)
+    log.info(os.popen(cmd).read())
+    log.info("=======================")
 
 def run_if_present(fname: str, funx):
     if ( (Path("./"+fname)).exists()):
-        print("%s ===> %s" % (   fname, str(funx.__name__)))
+        log.info("%s ===> %s" % (   fname, str(funx.__name__)))
         funx(fname)
         return True
     else:
-        #print ("%s does not exists skipped %s" % ( fname, str(funx.__name__))) 
+        #log.info ("%s does not exists skipped %s" % ( fname, str(funx.__name__))) 
         return False
 
 def run_if_missed(fname: str, funx):
     if ( not (Path("./"+fname)).exists()):
-        print("%s ===> %s" % ( fname, str(funx.__name__)  ))
+        log.info("%s ===> %s" % ( fname, str(funx.__name__)  ))
         funx(fname)
         return True
     else:
-        #print ("%s exists skipped %s" % ( fname, str(funx.__name__)))
+        #log.info ("%s exists skipped %s" % ( fname, str(funx.__name__)))
         return False
 
 """
@@ -37,7 +39,7 @@ def extract_var(fname,var_name):
         for l in f:        
             fr=val_finder.findall(l)
             if(len(fr)>0):
-                print("Found ",var_name,fr[0])
+                log.debug("Found ",var_name,fr[0])
                 return fr[0]
     return None
 
@@ -50,11 +52,22 @@ def append_if_missed(fname,*args):
 
 
 def run_if_unmarked(fname,marker,fun_to_call_if_unmarked):
-    #print("Mark search....",fname,marker)
+    #log.info("Mark search....",fname,marker)
     with open(fname,"r") as f:
         for line in f:
             if marker in line:
-                #print(" %s Marker found, %s execution skipped" % (marker, fun_to_call_if_unmarked.__name__))
+                #log.info(" %s Marker found, %s execution skipped" % (marker, fun_to_call_if_unmarked.__name__))
                 return None    
-    print("%s mrk %s" % (fname, marker))
+    log.info("%s ===> %s" % (fname, marker))
     return fun_to_call_if_unmarked(fname,marker)
+
+def run_each(path, glob,func):
+    """
+    Scan files
+    """
+    import fnmatch 
+    for root, dirs, filenames in os.walk(path):
+        for fname in fnmatch.filter(filenames, glob):
+            fullpath=os.path.join(root,fname)
+            log.info("%s ===> %s" % (fullpath, str(func.__name__) ))
+            func( fullpath )

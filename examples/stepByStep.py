@@ -5,7 +5,7 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../src")
 from pybash import *
 
 from pathlib import Path
-import os, re
+import os, re,logging
 
 def step1(dir_to_build):
     (Path(dir_to_build)).mkdir()
@@ -13,7 +13,7 @@ def step1(dir_to_build):
 
 def step2(fname):
     with open(fname, "a") as f:
-        f.write("Example\n")
+        f.write("Example file %s \n" % (fname))
 
 def step3(fname,marker):
     with open(fname, "a") as f:
@@ -22,8 +22,16 @@ def step3(fname,marker):
         f.write("daitangio=rulez")
 
 if __name__ == "__main__":
+    logging.basicConfig(format='[%(levelname)s] %(filename)s.%(funcName)s %(message)s',
+                        level=logging.INFO)
     run_if_missed("demo", step1)
     run_if_missed("demo/demofile.txt", step2)
+    run_if_missed("demo/demofile2.c", step2)
     run_if_unmarked("demo/demofile.txt","Step3",step3)
     val=extract_var("demo/demofile.txt", "daitangio")
     assert val == "rulez"
+    run_if_present("demo/demofile.txt", lambda f: print(f+" present!"))
+    run_if_present("demo/no_demofile.txt", lambda f: print(f+" ?present?"))
+    run_if_present("demo/demofile.txt", lambda f:run("ls -l "+f) )
+    #run_each("demo", "*.c",lambda f: (Path(f)).rename(f+".renamed") )
+    run_each("demo", "*.c",lambda f: print("** "+f) )
