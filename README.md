@@ -1,14 +1,14 @@
 # pybash
-Idempotent python 3 library for rapid scripting
+Idempotent python 3 library for rapid scripting.
 
-Provide support for creating file, adding data to them, patching and so on
+Provide support for creating file, adding data to them, patching and so on.
 
 # Why?
-Bash scripting is very easy to setup. So we end up using it all the time for simple procedural script
+Bash scripting is very easy to setup. So we end up using it all the time for simple procedural script.
 
 Sometimes is it useful to have idempotent script, like Ansible and Saltstack teach use, this script should only do an action if needed.
 
-I hacve this need for a complex set of migration procedure.
+I have this need for a complex set of migration procedures.
 I was unable to do it bash
 It was an overkilll using Java
 
@@ -18,8 +18,12 @@ Try the examples running them from the root directory
 
 The run() function is very handy to fire direct command, like you would do in a bash script, like running git pull or so on
 
+Note: For complex tasks, take alook at doit or GNU Make
 
 # Launch example
+
+Here an example of what happen if you run twice the *same* script:
+
     $  python examples/stepByStep.py
     [INFO] pybash.py.run_if_missed demo ===> step1
     [INFO] pybash.py.run_if_missed demo/demofile.txt ===> step2
