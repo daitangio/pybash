@@ -18,7 +18,7 @@ Try the examples running them from the root directory
 
 The run() function is very handy to fire direct command, like you would do in a bash script, like running git pull or so on
 
-Note: For complex tasks, take alook at doit or GNU Make
+Note: For complex tasks, take alook at GNU Make
 
 # Launch example
 
