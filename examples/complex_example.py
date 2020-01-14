@@ -47,5 +47,3 @@ if __name__ == "__main__":
         print("demofile no modified")
     else:
         print("demofile modified")
-    import time
-    time.sleep(2)
