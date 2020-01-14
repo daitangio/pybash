@@ -4,7 +4,12 @@ import os, re, logging,hashlib
 log = logging.getLogger(__name__)
 
 
-def run(cmd):
+def run(cmd, extra_param=None):
+    """
+        Supports one extra quoted params in append
+    """
+    if extra_param!=None:
+        cmd= cmd+ " \""+extra_param+"\" "
     log.info("Running: " + cmd)
     log.info(os.popen(cmd).read())
     log.info("=======================")
