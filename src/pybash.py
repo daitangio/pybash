@@ -16,7 +16,6 @@ def run(cmd, extra_param=None):
 
 
 
-
 def run_if_present(fname: str, funx):
     if (Path("./" + fname)).exists():
         log.info("%s ===> %s" % (fname, str(funx.__name__)))
