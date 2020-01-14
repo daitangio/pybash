@@ -68,10 +68,14 @@ def run_if_unmarked(fname, marker, fun_to_call_if_unmarked):
     return fun_to_call_if_unmarked(fname, marker)
 
 
-def run_each(path, glob, func, pool_size=os.cpu_count()):
+def run_each(path, glob, func, pool_size=max(1,os.cpu_count()-1)):
     """
-    Scan files anmd run in a multi-tasking fashion.
+    Scan files anmd run in a multi-process fashion.
 
+    This is true parallelism, but it comes with a cost. 
+    The entire memory of the script is copied into each subprocess that is spawned.
+    Logging configuration must be rebuild from zero.
+    Spawn overhead is high. 
 
     """
     import fnmatch
@@ -83,6 +87,5 @@ def run_each(path, glob, func, pool_size=os.cpu_count()):
                 fullpath = os.path.join(root, fname)                
                 pool_worker.starmap_async(run_if_present,[(fullpath,func)])
         pool_worker.close()
-        import time ; time.sleep(2)
         pool_worker.join()
        

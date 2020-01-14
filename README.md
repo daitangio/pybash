@@ -1,3 +1,6 @@
+ALPHA QUALITY
+*This library is still alpha quality software*
+
 # pybash
 Idempotent python 3 library for rapid scripting.
 
