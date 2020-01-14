@@ -1,9 +1,8 @@
-ALPHA QUALITY
+ALPHA QUALITY v1.0.0
 *This library is still alpha quality software*
 
 # pybash
-Idempotent python 3 library for rapid scripting.
-
+Idempotent and *minimal* python 3 library for rapid scripting.
 Provide support for creating file, adding data to them, patching and so on.
 
 # Why?
@@ -42,3 +41,11 @@ Here an example of what happen if you run twice the *same* script:
     demo/demofile.txt present!
     [INFO] pybash.py.run_each demo\demofile2.c ===> <lambda>
     ** demo\demofile2.c
+
+# Unstable interfaces / Dev notes
+
+    run_each               is still unstable
+    run_if_modified        is brand new and not tested on a huge set of test cases. it is NOT thread safe
+
+
+See   ./CHANGELOG.md for the last modification

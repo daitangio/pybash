@@ -1,5 +1,5 @@
 from pathlib import Path
-import os, re, logging
+import os, re, logging,hashlib
 
 log = logging.getLogger(__name__)
 
@@ -8,6 +8,8 @@ def run(cmd):
     log.info("Running: " + cmd)
     log.info(os.popen(cmd).read())
     log.info("=======================")
+
+
 
 
 def run_if_present(fname: str, funx):
@@ -28,6 +30,46 @@ def run_if_missed(fname: str, funx):
     else:
         # log.info ("%s exists skipped %s" % ( fname, str(funx.__name__)))
         return False
+
+
+def internal_checksum(fname):
+    hash_md5 = hashlib.md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
+
+def run_if_modified(fname: str, funx, cache_file=".pybash_cache"):
+    import json
+    if not (Path(cache_file)).exists():
+        # run for sure
+        log.info("%s = (md5) => %s" % (fname, str(funx.__name__)))
+        funx(fname)
+        db={}
+        # checksum    
+        db[fname]=internal_checksum(fname)         
+        data2serialize=json.dumps(db, indent=True, sort_keys=True)
+        with open(cache_file, "w") as f:
+            f.write(data2serialize)
+        return True
+    else:
+        # DB Exists: load it
+        with open(cache_file, "r") as f:
+             content=f.read()
+        db=json.loads(content)
+        new_checksum=internal_checksum(fname)
+        if  (fname not in db) or (db[fname]!= new_checksum):
+            db[fname]=new_checksum
+            log.info("%s = (md5*) => %s" % (fname, str(funx.__name__)))
+            funx(fname)
+            data2serialize=json.dumps(db, indent=True, sort_keys=True)
+            with open(cache_file, "w") as f:
+                f.write(data2serialize)
+            return True
+        else:
+            log.debug("%s = (md5) =STOP= %s" % (fname, str(funx.__name__)))
+            return False
+
 
 
 """
@@ -68,24 +110,48 @@ def run_if_unmarked(fname, marker, fun_to_call_if_unmarked):
     return fun_to_call_if_unmarked(fname, marker)
 
 
-def run_each(path, glob, func, pool_size=max(1,os.cpu_count()-1)):
+def run_each(path: str, glob: str, func):
     """
-    Scan files anmd run in a multi-process fashion.
-
-    This is true parallelism, but it comes with a cost. 
-    The entire memory of the script is copied into each subprocess that is spawned.
-    Logging configuration must be rebuild from zero.
-    Spawn overhead is high. 
+    Scan files and run in a sequential fashion.
+    The func must return True if make some changes
+    
 
     """
     import fnmatch
-    from multiprocessing import Pool 
+    counter=0
+    for root, dirs, filenames in os.walk(path):
+        for fname in fnmatch.filter(filenames, glob):
+            fullpath = os.path.join(root, fname)                                
+            r=func(fullpath)
+            if r== True:
+                counter=counter+1    
+    log.info("File-func changes: %s" %(counter))
+    return counter
+
+def run_each_async(path: str, glob: str, func, pool_size:int =max(1,os.cpu_count()-1)):
+    """
+    Scan files and run in a multi-process fashion.
+    The func must return True if make some changes 
+
+    The function must AVOID calling not hread-safe function like  run_if_modified
+
+    Spawn overhead is low but parallelism is not high because of ThreadPoolExecutor
+
+    """
+    import fnmatch
+    from  concurrent.futures import ThreadPoolExecutor
     log.info("Processes: %s" %( pool_size))
-    with Pool(pool_size) as pool_worker:
-        for root, dirs, filenames in os.walk(path):
-            for fname in fnmatch.filter(filenames, glob):
-                fullpath = os.path.join(root, fname)                
-                pool_worker.starmap_async(run_if_present,[(fullpath,func)])
-        pool_worker.close()
-        pool_worker.join()
+    executor= ThreadPoolExecutor(max_workers=pool_size, thread_name_prefix=path+"_")
+    futures=[]
+    counter=0
+    for root, dirs, filenames in os.walk(path):
+        for fname in fnmatch.filter(filenames, glob):
+            fullpath = os.path.join(root, fname)                                
+            futures.append(executor.submit(func, fullpath))        
+    for fut in futures:
+        if fut.result(timeout=3) == True:
+            counter=counter+1
+    executor.shutdown(wait=True)
+    log.info("File-func changes: %s" %(counter))
+    return counter
        
