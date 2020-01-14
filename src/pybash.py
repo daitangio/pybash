@@ -51,11 +51,9 @@ def extract_var(fname, var_name):
 
 def append_if_missed(fname, *args):
     for string_to_add in list(args):
-
         def appender(f):
             with open(f, "a") as fd:
                 fd.write("\n" + string_to_add)
-
         run_if_unmarked(fname, string_to_add, appender)
 
 
@@ -70,14 +68,21 @@ def run_if_unmarked(fname, marker, fun_to_call_if_unmarked):
     return fun_to_call_if_unmarked(fname, marker)
 
 
-def run_each(path, glob, func):
+def run_each(path, glob, func, pool_size=os.cpu_count()):
     """
-    Scan files
+    Scan files anmd run in a multi-tasking fashion.
+
+
     """
     import fnmatch
-
-    for root, dirs, filenames in os.walk(path):
-        for fname in fnmatch.filter(filenames, glob):
-            fullpath = os.path.join(root, fname)
-            log.info("%s ===> %s" % (fullpath, str(func.__name__)))
-            func(fullpath)
+    from multiprocessing import Pool 
+    log.info("Processes: %s" %( pool_size))
+    with Pool(pool_size) as pool_worker:
+        for root, dirs, filenames in os.walk(path):
+            for fname in fnmatch.filter(filenames, glob):
+                fullpath = os.path.join(root, fname)                
+                pool_worker.starmap_async(run_if_present,[(fullpath,func)])
+        pool_worker.close()
+        import time ; time.sleep(2)
+        pool_worker.join()
+       

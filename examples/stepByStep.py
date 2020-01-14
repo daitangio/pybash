@@ -33,5 +33,3 @@ if __name__ == "__main__":
     run_if_present("demo/demofile.txt", lambda f: print(f+" present!"))
     run_if_present("demo/no_demofile.txt", lambda f: print(f+" ?present?"))
     run_if_present("demo/demofile.txt", lambda f:run("ls -l "+f) )
-    #run_each("demo", "*.c",lambda f: (Path(f)).rename(f+".renamed") )
-    run_each("demo", "*.c",lambda f: print("** "+f) )
