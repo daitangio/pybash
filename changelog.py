@@ -17,7 +17,7 @@ if __name__ == "__main__":
     def check(fname):
         return run_if_modified(fname, lambda unused: True)
     c=run_each(".","*.py", check)
-    c=c+run_each(".","READNE.md", check)
+    c=c+run_each(".","README.md", check)
     if (c >0 ):
         make_change_log(c)
     else:

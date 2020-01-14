@@ -49,3 +49,7 @@ Here an example of what happen if you run twice the *same* script:
 
 
 See   ./CHANGELOG.md for the last modification
+
+# RELEASE HISTORY
+
+v1.0.0 - Jan 2020 First draft API, lot of work needed
