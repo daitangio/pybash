@@ -1,4 +1,5 @@
-dfe3209 (HEAD -> master, tag: v1.0.1) Changelog supports auto-tagging+run support one extra quoted params
+bab3cf4 (HEAD -> master, tag: v1.0.2) better CHANGELOG
+dfe3209 (tag: v1.0.1) Changelog supports auto-tagging+run support one extra quoted params
 c064c2b test changelog and tagging
 b46b054 CHANGELOG test
 11b3e91 (tag: v1.0.0) Minor fixes

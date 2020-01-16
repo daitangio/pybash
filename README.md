@@ -1,5 +1,3 @@
-ALPHA QUALITY v1.0.0
-*This library is still alpha quality software*
 
 # pybash
 Idempotent and *minimal* python 3 library for rapid scripting.
@@ -23,7 +21,7 @@ The run() function is very handy to fire direct command, like you would do in a 
 Note: For complex tasks, take alook at GNU Make
 
 # Launch example
-
+To run the examples set PYTHONPATH  to <pybash-path>/pybash/src
 Here an example of what happen if you run twice the *same* script:
 
     $  python examples/stepByStep.py
