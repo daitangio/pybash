@@ -1,4 +1,5 @@
-bab3cf4 (HEAD -> master, tag: v1.0.2) better CHANGELOG
+bc6474f (HEAD -> master, tag: v1.0.3) no more alpha software
+bab3cf4 (tag: v1.0.2) better CHANGELOG
 dfe3209 (tag: v1.0.1) Changelog supports auto-tagging+run support one extra quoted params
 c064c2b test changelog and tagging
 b46b054 CHANGELOG test

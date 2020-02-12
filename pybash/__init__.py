@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from pathlib import Path
 import os, re, logging,hashlib
 
@@ -158,4 +159,6 @@ def run_each_async(path: str, glob: str, func, pool_size:int =max(1,os.cpu_count
     executor.shutdown(wait=True)
     log.info("File-func changes: %s" %(counter))
     return counter
-       
+
+
+__version__ = '1.0.0'
