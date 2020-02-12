@@ -50,7 +50,20 @@ Here an example of what happen if you run twice the *same* script:
 
 See   ./CHANGELOG.md for the last modification
 
+# Tests
+
+Install py.test with
+
+    pip install pytest
+
+run with
+    pytest
+
+See 
+ https://docs.pytest.org/en/latest/example/index.html
+for usage examples
+
 # RELEASE HISTORY
 
 v1.0.0 - Jan 2020 First draft API, lot of work needed
-       - Added setup.py (not yet on python package index)
+       - Added setup.py (not yet on python package index) and py.test minimal example
