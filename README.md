@@ -21,7 +21,9 @@ The run() function is very handy to fire direct command, like you would do in a 
 Note: For complex tasks, take alook at GNU Make
 
 # Launch example
-To run the examples set PYTHONPATH  to <pybash-path>/pybash/src
+Install the package with
+    > python setup.py install
+
 Here an example of what happen if you run twice the *same* script:
 
     $  python examples/stepByStep.py
@@ -51,3 +53,4 @@ See   ./CHANGELOG.md for the last modification
 # RELEASE HISTORY
 
 v1.0.0 - Jan 2020 First draft API, lot of work needed
+       - Added setup.py (not yet on python package index)
