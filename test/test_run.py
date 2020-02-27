@@ -21,3 +21,9 @@ def test_checksum(tmpdir):
     assert run_if_modified(str(tmpdir+"/test.txt"),checker)
     assert run_if_modified(str(tmpdir+"/test.txt"),checker) == False
 
+def test_run_on_error_must_throw_exception():
+    try:
+        run("exit 10")
+        assert False
+    except PyBashRunError:
+        assert True

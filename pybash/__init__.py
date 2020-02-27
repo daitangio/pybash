@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from pathlib import Path
 import os, re, logging,hashlib
+import subprocess
 
 log = logging.getLogger(__name__)
 
+class PyBashRunError(RuntimeError):
+    pass
 
 def run(cmd, extra_param=None):
     """
@@ -12,7 +15,15 @@ def run(cmd, extra_param=None):
     if extra_param!=None:
         cmd= cmd+ " \""+extra_param+"\" "
     log.info("Running: " + cmd)
-    log.info(os.popen(cmd).read())
+    try:
+        p=subprocess.run(cmd, capture_output=True, shell=True, check=True)
+        log.info("\n"+p.stdout.decode('utf-8'))
+        if p.stderr!= b'':
+            log.error(p.stderr)
+        if p.returncode!=0:
+            raise PyBashRunError("Ret code!=0 is "+str(p.returncode))
+    except subprocess.CalledProcessError as e:
+        raise PyBashRunError(e)
     log.info("=======================")
 
 
@@ -161,4 +172,4 @@ def run_each_async(path: str, glob: str, func, pool_size:int =max(1,os.cpu_count
     return counter
 
 
-__version__ = '1.0.0'
+__version__ = '2.0.0'

@@ -57,7 +57,9 @@ Install py.test with
     pip install pytest
 
 run with
-    pytest
+    PYTHONPATH=. pytest
+
+The PYTHONPATH variable is used to ensure you are using the current version and not another possibly installed one on your env
 
 See 
  https://docs.pytest.org/en/latest/example/index.html
