@@ -3,7 +3,7 @@ from pathlib import Path
 import os, re, logging,hashlib
 import subprocess
 
-log = logging.getLogger(__name__)
+log = logging.getLogger("pybash")
 
 class PyBashRunError(RuntimeError):
     pass
@@ -144,6 +144,24 @@ def run_each(path: str, glob: str, func):
     log.info("File-func changes: %s" %(counter))
     return counter
 
+def regexp_replace_file(filename: str, compiled_regexp,replace_str: str ):
+    """
+    Smart way of replacing a compiled regexp in a file
+    Rewrite the file only if really needed
+    """
+    with open(filename, 'r') as file :
+        filedata = file.read()
+    log.info("Replacing {} into {}".format( compiled_regexp, replace_str))
+    filedata_new=compiled_regexp.sub(replace_str,filedata)
+    if filedata_new!=filedata:
+        # Write the file out again only if modified
+        with open(filename, 'w') as file:
+            file.write(filedata_new)
+        log.info(filename+" CHANGED!")
+        return True
+    else:
+        return False    
+
 def run_each_async(path: str, glob: str, func, pool_size:int =max(1,os.cpu_count()-1)):
     """
     Scan files and run in a multi-process fashion.
@@ -172,4 +190,4 @@ def run_each_async(path: str, glob: str, func, pool_size:int =max(1,os.cpu_count
     return counter
 
 
-__version__ = '2.0.0'
+__version__ = '2.1.0'
