@@ -24,7 +24,7 @@ def run(cmd, extra_param=None):
             raise PyBashRunError("Ret code!=0 is "+str(p.returncode))
     except subprocess.CalledProcessError as e:
         raise PyBashRunError(e)
-    log.info("=======================")
+    log.debug("=======================")
 
 
 
@@ -190,4 +190,4 @@ def run_each_async(path: str, glob: str, func, pool_size:int =max(1,os.cpu_count
     return counter
 
 
-__version__ = '2.1.0'
+__version__ = '2.1.1'
