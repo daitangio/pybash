@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 demo*
 .pybash_cache
+.vscode
