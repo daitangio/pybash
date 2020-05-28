@@ -1,7 +1,7 @@
 import sys, os
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/src")
-from pybash import *
+from runif import *
 
 from pathlib import Path
 import os, re,logging
@@ -35,4 +35,4 @@ if __name__ == "__main__":
         print("Tagging",tag, "Comment:",comment)
         run("git commit -a -m ",comment)
         run("git tag ",tag)
-    #run_if_modified("src/pybash.py",make_change_log)
+    #run_if_modified("src/runif.py",make_change_log)

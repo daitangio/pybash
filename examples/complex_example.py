@@ -8,7 +8,7 @@ compile a bunch of python files using parallel pool.
 """
 import sys, os
 
-from pybash import *
+from runif import *
 
 from pathlib import Path
 import re,logging

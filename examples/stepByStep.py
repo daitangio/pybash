@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import sys, os
 
-from pybash import *
+from runif import *
 
 from pathlib import Path
 import os, re,logging

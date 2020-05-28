@@ -1,6 +1,6 @@
 import pytest
 
-from pybash import *
+from runif import *
 
 def f():
     raise SystemExit(1)
@@ -25,5 +25,5 @@ def test_run_on_error_must_throw_exception():
     try:
         run("exit 10")
         assert False
-    except PyBashRunError:
+    except RunifError:
         assert True
