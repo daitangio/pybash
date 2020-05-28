@@ -67,5 +67,4 @@ for usage examples
 
 # RELEASE HISTORY
 
-v1.0.0 - Jan 2020 First draft API, lot of work needed
-       - Added setup.py (not yet on python package index) and py.test minimal example
+v0.0.1 - May 2020 First public release
