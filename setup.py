@@ -2,7 +2,7 @@ import io
 import re
 from setuptools import setup
 
-with io.open("README.md", "rt", encoding="utf8") as f:
+with io.open("README.rst", "rt", encoding="utf8") as f:
     readme = f.read()
 
 with io.open("runif/__init__.py", "rt", encoding="utf8") as f:
@@ -23,7 +23,7 @@ setup(
     maintainer="Giovanni Giorgi",
     maintainer_email="jj@gioorgi.com",
     description="Idempotent and minimal python library for rapid scripting.",
-    long_description="Idempotent and minimal python library for rapid scripting.",
+    long_description=readme,
     packages=["runif"],
     include_package_data=True,
     python_requires=">=3.6",

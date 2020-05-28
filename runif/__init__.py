@@ -190,4 +190,4 @@ def run_each_async(path: str, glob: str, func, pool_size:int =max(1,os.cpu_count
     return counter
 
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
