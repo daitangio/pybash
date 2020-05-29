@@ -6,6 +6,10 @@ import subprocess
 log = logging.getLogger("runif")
 
 class RunifError(RuntimeError):
+    """
+    Raised by run function if the called command has a return code != 0.
+
+    """
     pass
 
 def run(cmd, extra_param=None):
@@ -14,7 +18,7 @@ def run(cmd, extra_param=None):
     """
     if extra_param!=None:
         cmd= cmd+ " \""+extra_param+"\" "
-    log.info("Running: " + cmd)
+    log.debug("=== Running: " + cmd)
     try:
         p=subprocess.run(cmd, capture_output=True, shell=True, check=True)
         log.info("\n"+p.stdout.decode('utf-8'))
@@ -56,6 +60,12 @@ def internal_checksum(fname):
     return hash_md5.hexdigest()
 
 def run_if_modified(fname: str, funx, cache_file=".runif_cache"):
+    """
+    Run the function if fname is modified with respect of last run.
+    To check for modification a md5 signature is used.
+    The signature are stored in a local cache_file the caller can customize.
+    It works well with small files, it can be slow on larger one.
+    """
     import json
     if not (Path(cache_file)).exists():
         # run for sure
@@ -88,13 +98,16 @@ def run_if_modified(fname: str, funx, cache_file=".runif_cache"):
 
 
 
-"""
-Extract a var from a simple property file (with assignments)
-Works only on a specific need
-"""
-
 
 def extract_var(fname, var_name):
+    """
+    Extract a var from a simple property file (with assignments).
+    Property files are like Java property files with syntax:
+
+        prop=value
+
+    It can be useful to extract data from gradle.properties, spring properties or so on    
+    """
     # Search for a simple assignment
     match_str = var_name + r"\s*=\s*(.*)"
     val_finder = re.compile(match_str)
@@ -116,6 +129,15 @@ def append_if_missed(fname, *args):
 
 
 def run_if_unmarked(fname, marker, fun_to_call_if_unmarked):
+    """
+    Run the function  if the string marker is not found inside file fname
+    Marker can be substring of a line.
+    Tipical usage secnario is to run a function which modify the content of a file.
+
+    The function will be called with two parameters: filename and marker
+    so it can handle more than one function type.
+
+    """
     # log.info("Mark search....",fname,marker)
     with open(fname, "r") as f:
         for line in f:
@@ -189,5 +211,5 @@ def run_each_async(path: str, glob: str, func, pool_size:int =max(1,os.cpu_count
     log.info("File-func changes: %s" %(counter))
     return counter
 
-
+# Tag 1.0.4 is the next official release
 __version__ = '0.0.2'
