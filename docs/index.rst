@@ -48,6 +48,22 @@ Simple usage: first example
 Create workdir if missed.
 
 
+Complex example
+============================
+
+zconnect2Gradle.py is a complex example we used on a production site.
+
+We need a way to convert several (hundreds) of IBM ZConnect project(s) to Gradle. 
+Source project was done on Eclipse via a propietary plugin.
+The following script will read the provided directory, added a small gradle property file and collect all the data 
+in a master yaml file called "recap".
+
+
+.. literalinclude:: ../examples/zconnect2Gradle.py
+
+
+
+
 Runif functions
 =================
 

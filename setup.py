@@ -13,7 +13,7 @@ setup(
     version=version,
     url="https://gioorgi.com/2020/runif/",
     project_urls={
-        "Documentation": "https://github.com/daitangio/runif",
+        "Documentation": "https://runif.readthedocs.io/",
         "Code": "https://github.com/daitangio/runif",
         "Issue tracker": "https://github.com/daitangio/runif/issues",
     },

@@ -33,6 +33,10 @@ def run(cmd, extra_param=None):
 
 
 def run_if_present(fname: str, funx):
+    """
+    If fname is present, execute funx(fname)    
+    Return True if call the function, False otherwise.
+    """    
     if (Path("./" + fname)).exists():
         log.info("%s ===> %s" % (fname, str(funx.__name__)))
         funx(fname)
@@ -43,6 +47,10 @@ def run_if_present(fname: str, funx):
 
 
 def run_if_missed(fname: str, funx):
+    """
+    If fname is missed, execute funx(fname)    
+    Return True if call the function, False otherwise.
+    """
     if not (Path("./" + fname)).exists():
         log.info("%s ===> %s" % (fname, str(funx.__name__)))
         funx(fname)
@@ -121,6 +129,10 @@ def extract_var(fname, var_name):
 
 
 def append_if_missed(fname, *args):
+    """
+        You pass a list of strings.
+        For every string, if it is not already present on fname, it is appended.        
+    """
     for string_to_add in list(args):
         def appender(f):
             with open(f, "a") as fd:
@@ -212,4 +224,4 @@ def run_each_async(path: str, glob: str, func, pool_size:int =max(1,os.cpu_count
     return counter
 
 # Tag 1.0.4 is the next official release
-__version__ = '0.0.2'
+__version__ = '0.0.3'
