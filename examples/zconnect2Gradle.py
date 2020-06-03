@@ -2,7 +2,7 @@
 # Python3 dep wizard
 
 import hashlib
-import sys, sqlite3
+import sys
 import functools, re
 import zipfile, os
 
